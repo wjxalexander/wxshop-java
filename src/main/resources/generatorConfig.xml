@@ -10,9 +10,10 @@
                         userId="root"
                         password="root">
         </jdbcConnection>
-        <javaModelGenerator targetPackage="com.jingxin.wxshop.generate" targetProject="src/main/java">
+        <javaModelGenerator targetPackage="com.jingxin.wxshop.generate" targetProject="src/main/java" >
             <property name="enableSubPackages" value="true"/>
             <property name="trimStrings" value="true"/>
+            <property name="mybatis.generator.overwrite" value="true"/>
         </javaModelGenerator>
 
         <sqlMapGenerator targetPackage="db.mybatis" targetProject="src/main/resources">
