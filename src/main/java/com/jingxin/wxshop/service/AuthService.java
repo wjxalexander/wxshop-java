@@ -1,8 +1,6 @@
 package com.jingxin.wxshop.service;
 
-import com.jingxin.wxshop.generate.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
 @Service
