@@ -1,6 +1,5 @@
 package com.jingxin.wxshop;
 
-import com.jingxin.wxshop.response.VerificationCodeResponse;
 import com.jingxin.wxshop.service.AuthService;
 import com.jingxin.wxshop.service.TelVerificationService;
 import jakarta.servlet.http.HttpServletResponse;
@@ -32,7 +31,7 @@ public class AuthController {
     if (!telVerificationService.verifyTelParameter(code)) {
       response.setStatus(HttpStatus.BAD_REQUEST.value());
     }
-    String authCode = authService.sendVerificationCode(code.getTel());
+    authService.sendVerificationCode(code.getTel());
     ResponseEntity.status(HttpStatus.OK.value());
   }
 
@@ -54,6 +53,11 @@ public class AuthController {
   public static class TelAndCode {
     private String tel;
     private String code;
+
+    public TelAndCode(String tel, String code) {
+      this.tel = tel;
+      this.code = code;
+    }
 
     public String getTel() {
       return tel;
