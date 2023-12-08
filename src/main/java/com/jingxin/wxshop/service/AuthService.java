@@ -8,13 +8,13 @@ public class AuthService  {
     private final UserService userService;
     private final VerificationCodeCheckService verificationCodeCheckService;
     private final SmsCodeService smsCodeService;
-
     @Autowired
-    public AuthService(UserService userService, VerificationCodeCheckService verificationCodeCheckService, SmsCodeService smsCodeService){
-        this.verificationCodeCheckService = verificationCodeCheckService;
+    public AuthService(UserService userService, VerificationCodeCheckService verificationCodeCheckService, SmsCodeService smsCodeService) {
         this.userService = userService;
+        this.verificationCodeCheckService = verificationCodeCheckService;
         this.smsCodeService = smsCodeService;
     }
+
     public String sendVerificationCode(String tel) {
       userService.createUserIfNotExist(tel);
       String code = smsCodeService.sendSmsCode(tel);

@@ -82,6 +82,11 @@
             <artifactId>javaee-api</artifactId>
             <version>8.0</version>
         </dependency>
+        <dependency>
+            <groupId>com.github.spotbugs</groupId>
+            <artifactId>spotbugs-annotations</artifactId>
+            <version>4.7.3</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -156,9 +161,10 @@
                 <groupId>com.github.spotbugs</groupId>
                 <artifactId>spotbugs-maven-plugin</artifactId>
                 <version>4.8.1.0</version>
-<!--                <configuration>-->
-<!--                    <excludeFilterFile>ignore.xml</excludeFilterFile>-->
-<!--                </configuration>-->
+
+                <configuration>
+                    <excludeFilterFile>${basedir}/.circleci/spotbugs.xml</excludeFilterFile>
+                </configuration>
                 <dependencies>
                     <!-- overwrite dependency on spotbugs if you want to specify the version of spotbugs -->
                     <dependency>
