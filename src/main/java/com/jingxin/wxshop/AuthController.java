@@ -13,10 +13,7 @@ import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api")
@@ -55,6 +52,7 @@ public class AuthController {
                     new UsernamePasswordToken(telAndCode.getTel(), telAndCode.getCode());
             token.setRememberMe(true);
             try {
+                logger.info("login checker");
                 subject.login(token);
             } catch (Exception uae) {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Login failed");
@@ -63,6 +61,10 @@ public class AuthController {
         return ResponseEntity.ok().build();
     }
 
+    @GetMapping("/status")
+    public void loginStatus(){
+       logger.info(SecurityUtils.getSubject().getPrincipal());
+    }
     public static class TelAndCode {
         private String tel;
         private String code;
