@@ -1,34 +1,24 @@
 package com.jingxin.wxshop.config;
 
-import com.jingxin.wxshop.service.ShiroRealmService;
-import com.jingxin.wxshop.service.VerificationCodeCheckService;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.mgt.RememberMeManager;
+import com.jingxin.wxshop.service.ShiroRealm;
+import org.apache.shiro.cache.MemoryConstrainedCacheManager;
 import org.apache.shiro.mgt.SecurityManager;
-import org.apache.shiro.spring.config.ShiroAnnotationProcessorConfiguration;
-import org.apache.shiro.spring.config.ShiroBeanConfiguration;
+import org.apache.shiro.session.mgt.SessionManager;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
-import org.apache.shiro.spring.web.config.ShiroRequestMappingConfig;
-import org.apache.shiro.spring.web.config.ShiroWebConfiguration;
-import org.apache.shiro.spring.web.config.ShiroWebFilterConfiguration;
-import org.apache.shiro.web.mgt.CookieRememberMeManager;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.apache.shiro.web.servlet.SimpleCookie;
+import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
 
 import java.util.HashMap;
 import java.util.Map;
 
 @Configuration
-@Import({ShiroBeanConfiguration.class,
-        ShiroAnnotationProcessorConfiguration.class,
-        ShiroWebConfiguration.class,
-        ShiroWebFilterConfiguration.class,
-        ShiroRequestMappingConfig.class})
+
 public class ShiroConfig {
     public static final String ANONYMOUS = "anon";
+
     @Bean
     public ShiroFilterFactoryBean shiroFilter(SecurityManager securityManager) {
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
@@ -41,39 +31,30 @@ public class ShiroConfig {
 
         return shiroFilterFactoryBean;
     }
+
     @Bean
-    public ShiroRealmService shiroRealm(VerificationCodeCheckService verificationCodeCheckService) {
-        return new ShiroRealmService(verificationCodeCheckService);
-    }
-    @Bean
-    public DefaultWebSecurityManager customSecurityManager(VerificationCodeCheckService verificationCodeCheckService) {
+    public DefaultWebSecurityManager securityManager(ShiroRealm shiroRealm) {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
-        securityManager.setRealm(myRealm(verificationCodeCheckService));
-        securityManager.setRememberMeManager(rememberMeManager());
-        SecurityUtils.setSecurityManager(securityManager); // Set the SecurityManager as a VM static singleton;
+        securityManager.setRealm(shiroRealm);
+        securityManager.setSessionManager(rememberMeSessionManager());
+        securityManager.setCacheManager(new MemoryConstrainedCacheManager());
         return securityManager;
-    }
-    @Bean
-    public ShiroRealmService myRealm(VerificationCodeCheckService verificationCodeCheckService) {
-        ShiroRealmService realm = new ShiroRealmService(verificationCodeCheckService);
-        return realm;
     }
 
     @Bean("name=myRememberMeCookie")
     public SimpleCookie rememberMeCookie() {
-        SimpleCookie cookie = new SimpleCookie("MY_REMEMBER_ME_COOKIE");
+        SimpleCookie cookie = new SimpleCookie("sid");
         cookie.setHttpOnly(true);
         cookie.setMaxAge(2592000); // 30 days in seconds
         // Customize other cookie settings if needed
         return cookie;
     }
 
-    @Bean("name=rememberMeManager")
-    public RememberMeManager rememberMeManager() {
-        CookieRememberMeManager rememberMeManager = new CookieRememberMeManager();
-        rememberMeManager.setCookie(rememberMeCookie());
-        // Customize other settings if needed
-        return rememberMeManager;
+    @Bean
+    public SessionManager rememberMeSessionManager() {
+        DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
+        sessionManager.setSessionIdCookieEnabled(true);
+        sessionManager.setSessionIdCookie(rememberMeCookie());    // Customize other settings if needed
+        return sessionManager;
     }
-
 }

@@ -11,11 +11,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ShiroRealmService extends AuthorizingRealm {
+public class ShiroRealm extends AuthorizingRealm {
     private final VerificationCodeCheckService verificationCodeCheckService;
 
     @Autowired
-    public ShiroRealmService(VerificationCodeCheckService verificationCodeCheckService) {
+    public ShiroRealm(VerificationCodeCheckService verificationCodeCheckService) {
         this.verificationCodeCheckService = verificationCodeCheckService;
         this.setCredentialsMatcher((authenticationToken, authenticationInfo) -> new String((char[]) authenticationToken.getCredentials()).equals(authenticationInfo.getCredentials()));
     }
