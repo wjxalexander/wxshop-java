@@ -73,6 +73,12 @@ public class AuthController {
         }
     }
 
+    @PostMapping("/logout")
+    public void logout(){
+        logger.info("invoke logout");
+        SecurityUtils.getSubject().logout();
+    }
+
     public static class TelAndCode {
         private String tel;
         private String code;

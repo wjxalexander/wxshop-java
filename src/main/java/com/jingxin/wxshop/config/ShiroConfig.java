@@ -73,8 +73,8 @@ public class ShiroConfig implements WebMvcConfigurer {
     @Bean
     public SessionManager rememberMeSessionManager() {
         DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
-        sessionManager.setSessionIdCookieEnabled(true);
-        sessionManager.setSessionIdCookie(rememberMeCookie());    // Customize other settings if needed
+//        sessionManager.setSessionIdCookieEnabled(true);
+//        sessionManager.setSessionIdCookie(rememberMeCookie());    // Customize other settings if needed
         return sessionManager;
     }
 

@@ -2,6 +2,7 @@ package com.jingxin.wxshop.service;
 
 import com.jingxin.wxshop.DAO.UserDao;
 import com.jingxin.wxshop.generate.User;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.apache.ibatis.exceptions.PersistenceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
+@SuppressFBWarnings("EI_EXPOSE_REP2")
 public class UserService {
     private final UserDao userDao;
     @Autowired
