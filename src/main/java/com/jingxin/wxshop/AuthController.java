@@ -1,7 +1,9 @@
 package com.jingxin.wxshop;
 
+import com.jingxin.wxshop.entity.LoginStatusResponse;
 import com.jingxin.wxshop.service.AuthService;
 import com.jingxin.wxshop.service.TelVerificationService;
+import com.jingxin.wxshop.service.UserContext;
 import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletResponse;
 import org.apache.logging.log4j.LogManager;
@@ -62,9 +64,15 @@ public class AuthController {
     }
 
     @GetMapping("/status")
-    public void loginStatus(){
-       logger.info(SecurityUtils.getSubject().getPrincipal());
+    public ResponseEntity<?> loginStatus() {
+        logger.info(SecurityUtils.getSubject().getPrincipal());
+        if (UserContext.getCurrentUser() == null) {
+            return ResponseEntity.status(HttpStatus.OK).body(LoginStatusResponse.notLogin());
+        } else {
+            return ResponseEntity.status(HttpStatus.OK).body(LoginStatusResponse.login(UserContext.getCurrentUser()));
+        }
     }
+
     public static class TelAndCode {
         private String tel;
         private String code;

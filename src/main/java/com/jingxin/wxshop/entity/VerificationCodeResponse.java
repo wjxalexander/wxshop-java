@@ -1,4 +1,4 @@
-package com.jingxin.wxshop.response;
+package com.jingxin.wxshop.entity;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class VerificationCodeResponse {

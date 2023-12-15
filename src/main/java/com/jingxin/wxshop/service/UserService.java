@@ -6,6 +6,8 @@ import org.apache.ibatis.exceptions.PersistenceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class UserService {
     private final UserDao userDao;
@@ -28,5 +30,9 @@ public class UserService {
             e.printStackTrace();
         }
         return user;
+    }
+
+    public Optional<User> getUserByTel(String tel) {
+        return Optional.ofNullable(userDao.getByTel(tel));
     }
 }
